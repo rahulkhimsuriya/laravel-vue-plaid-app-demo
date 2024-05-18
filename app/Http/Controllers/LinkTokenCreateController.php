@@ -29,7 +29,7 @@ class LinkTokenCreateController extends Controller
         ]);
 
         return response()->json([
-            'data' => $linkToken,
+            'data' => $linkToken->toArray(),
         ]);
     }
 }

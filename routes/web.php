@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LinkTokenCreateController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PublicTokenController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,9 +17,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -26,7 +26,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/link/token/create', LinkTokenCreateController::class)->name('link.token.create');
+    Route::post('/link/token/create', LinkTokenCreateController::class)->name('link.token.create');
+    Route::get('/public/token', PublicTokenController::class)->name('public.token');
+    Route::post('/public/token', PublicTokenController::class)->name('public.token');
 });
 
 require __DIR__.'/auth.php';
