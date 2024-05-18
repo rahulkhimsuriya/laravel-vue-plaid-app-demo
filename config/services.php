@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'plaid' => [
+        'environment' => env('PLAID_ENVIRONMENT'),
+        'client_id' => env('PLAID_CLIENT_ID'),
+        'client_secret' => env('PLAID_SECRET'),
+    ],
 ];
