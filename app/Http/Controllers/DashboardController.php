@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\BankAccountLinked;
-use App\Models\BankAccount;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 

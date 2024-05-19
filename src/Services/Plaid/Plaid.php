@@ -6,6 +6,7 @@ use Services\Plaid\Account\Account;
 use Services\Plaid\Institution\Institution;
 use Services\Plaid\Item\Item;
 use Services\Plaid\LinkToken\LinkToken;
+use Services\Plaid\Transaction\Transaction;
 
 class Plaid
 {
@@ -27,5 +28,10 @@ class Plaid
     public function linkToken(): LinkToken
     {
         return new LinkToken();
+    }
+
+    public function transaction(): Transaction
+    {
+        return new Transaction();
     }
 }
