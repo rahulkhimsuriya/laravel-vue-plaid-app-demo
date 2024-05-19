@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Enums\BankAccountStatus;
+use App\QueryBuilder\BankAccountQueryBuilder;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -26,6 +28,11 @@ class BankAccount extends Model
         'access_token_expired_at' => 'immutable_datetime',
         'status' => BankAccountStatus::class,
     ];
+
+    public function newEloquentBuilder($query): BankAccountQueryBuilder
+    {
+        return new BankAccountQueryBuilder($query);
+    }
 
     public function isPending()
     {
@@ -48,6 +55,11 @@ class BankAccount extends Model
         }
 
         return false;
+    }
+
+    public function bank(): BelongsTo
+    {
+        return $this->belongsTo(Bank::class);
     }
 
     public function transactions(): HasMany

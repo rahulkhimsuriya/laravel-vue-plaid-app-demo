@@ -6,6 +6,7 @@ use App\Models\BankAccount;
 use App\Models\BankAccountTransaction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -13,7 +14,7 @@ use Illuminate\Support\Carbon;
 use Services\Plaid\Plaid;
 use Services\Plaid\Transaction\DataTransferObjects\TransactionDTO;
 
-class TransactionSyncJob implements ShouldQueue
+class TransactionSyncJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -48,7 +49,7 @@ class TransactionSyncJob implements ShouldQueue
                     return $transaction->accountId === $this->bankAccount->account_id;
                 })
                 ->filter(function (TransactionDTO $transaction) use ($transactions) {
-                    return $transactions->contains($transaction->transactionId);
+                    return $transactions->where('transaction_id', '=', $transaction->transactionId)->count();
                 })
                 ->map(function (TransactionDTO $transaction) use ($now) {
                     return [
@@ -72,10 +73,10 @@ class TransactionSyncJob implements ShouldQueue
         }
     }
 
-    private function transactions()
+    private function transactions(): EloquentCollection
     {
         return BankAccountTransaction::query()
-            ->select(['transaction_id'])
+            ->select(['id', 'transaction_id'])
             ->where('bank_account_id', '=', $this->bankAccount->id)
             ->get();
     }

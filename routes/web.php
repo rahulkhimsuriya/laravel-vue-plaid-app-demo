@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LinkTokenCreateController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicTokenController;
+use App\Jobs\TransactionSyncJob;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,4 +32,4 @@ Route::middleware('auth')->group(function () {
     Route::post('/public/token', PublicTokenController::class)->name('public.token');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
